@@ -99,13 +99,6 @@ export default function App() {
     { id: 'smooth', label: 'Smooth', icon: CircleDashed },
   ];
 
-  const predefinedColors = [
-    { hex: '#000000', bgColor: 'bg-black' },
-    { hex: '#22d3ee', bgColor: 'bg-cyan-400' },
-    { hex: '#c084fc', bgColor: 'bg-purple-400' },
-    { hex: '#4ade80', bgColor: 'bg-green-400' },
-  ];
-
   return (
     <div className="min-h-screen flex flex-col font-sans text-white">
       {/* TopAppBar */}
@@ -120,9 +113,6 @@ export default function App() {
             </span>
           </div>
           <div className="flex items-center gap-4">
-            <button className="text-white/70 hover:text-white transition-all duration-300 flex items-center">
-              <UserCircle2 className="w-6 h-6" />
-            </button>
           </div>
         </div>
       </header>
@@ -204,17 +194,6 @@ export default function App() {
                 Accent Color
               </label>
               <div className="flex gap-4 items-center flex-wrap">
-                {predefinedColors.map((color) => (
-                  <button
-                    key={color.hex}
-                    onClick={() => setAccentColor(color.hex)}
-                    className={`w-12 h-12 rounded-full ${color.bgColor} border border-white/20 flex items-center justify-center transition-transform hover:scale-110 ${
-                      accentColor === color.hex ? 'text-white ring-2 ring-white/50' : 'text-transparent'
-                    }`}
-                  >
-                    <Check className="w-5 h-5" />
-                  </button>
-                ))}
                 <label className="relative w-12 h-12 rounded-full bg-white/5 border border-white/15 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors cursor-pointer overflow-hidden">
                   <input 
                     type="color" 
@@ -304,23 +283,8 @@ export default function App() {
           <div className="flex flex-col items-center md:items-start gap-2">
             <span className="font-semibold text-2xl text-white">QRM</span>
             <p className="text-sm text-white/50">
-              © 2024 QRM Generator. All rights reserved.
+              © reserved by meharaj
             </p>
-          </div>
-
-          <div className="flex gap-6">
-            <a href="#" className="text-sm text-white/70 hover:text-white transition-colors hover:underline">Terms</a>
-            <a href="#" className="text-sm text-white/70 hover:text-white transition-colors hover:underline">Privacy</a>
-            <a href="#" className="text-sm text-white/70 hover:text-white transition-colors hover:underline">API Documentation</a>
-          </div>
-
-          <div className="flex gap-4">
-            <button className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition-colors">
-              <Share2 className="w-5 h-5" />
-            </button>
-            <button className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition-colors">
-              <Globe className="w-5 h-5" />
-            </button>
           </div>
         </div>
       </footer>

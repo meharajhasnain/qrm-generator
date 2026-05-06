@@ -24,7 +24,7 @@ import {
 export default function App() {
   const [textInput, setTextInput] = useState('');
   const [nodeStyle, setNodeStyle] = useState('square');
-  const [accentColor, setAccentColor] = useState('blue');
+  const [accentColor, setAccentColor] = useState('#000000');
   const [embedLogo, setEmbedLogo] = useState(true);
   const [highPrecision, setHighPrecision] = useState(false);
 
@@ -39,7 +39,7 @@ export default function App() {
       type: "square"
     },
     backgroundOptions: {
-      color: "transparent",
+      color: "#ffffff",
     },
     imageOptions: {
       crossOrigin: "anonymous",
@@ -55,20 +55,6 @@ export default function App() {
   }, [qrCode, qrRef]);
 
   useEffect(() => {
-    const accentColorMap = {
-      blue: '#22d3ee', // cyan-400
-      purple: '#c084fc', // purple-400
-      green: '#4ade80' // green-400
-    };
-
-    const getDotsType = () => {
-      switch(nodeStyle) {
-        case 'rounded': return 'rounded';
-        case 'smooth': return 'classy-rounded';
-        default: return 'square';
-      }
-    };
-
     const getCornersType = () => {
       switch(nodeStyle) {
         case 'rounded': return 'extra-rounded';
@@ -77,7 +63,7 @@ export default function App() {
       }
     };
 
-    const currentStroke = accentColorMap[accentColor as keyof typeof accentColorMap] || '#000';
+    const currentStroke = accentColor;
     const logoSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="${currentStroke}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="background:#fff; border-radius:4px;"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></svg>`;
     const b64Logo = `data:image/svg+xml;base64,${btoa(logoSvg)}`;
 
@@ -113,10 +99,11 @@ export default function App() {
     { id: 'smooth', label: 'Smooth', icon: CircleDashed },
   ];
 
-  const accentColors = [
-    { id: 'blue', colorClass: 'bg-cyan-400' },
-    { id: 'purple', colorClass: 'bg-purple-400' },
-    { id: 'green', colorClass: 'bg-green-400' },
+  const predefinedColors = [
+    { hex: '#000000', bgColor: 'bg-black' },
+    { hex: '#22d3ee', bgColor: 'bg-cyan-400' },
+    { hex: '#c084fc', bgColor: 'bg-purple-400' },
+    { hex: '#4ade80', bgColor: 'bg-green-400' },
   ];
 
   return (
@@ -216,21 +203,27 @@ export default function App() {
               <label className="text-sm font-semibold tracking-widest text-white/50 uppercase">
                 Accent Color
               </label>
-              <div className="flex gap-4 items-center">
-                {accentColors.map((color) => (
+              <div className="flex gap-4 items-center flex-wrap">
+                {predefinedColors.map((color) => (
                   <button
-                    key={color.id}
-                    onClick={() => setAccentColor(color.id)}
-                    className={`w-12 h-12 rounded-full ${color.colorClass} flex items-center justify-center transition-transform hover:scale-110 ${
-                      accentColor === color.id ? 'text-white ring-2 ring-white/20' : ''
+                    key={color.hex}
+                    onClick={() => setAccentColor(color.hex)}
+                    className={`w-12 h-12 rounded-full ${color.bgColor} border border-white/20 flex items-center justify-center transition-transform hover:scale-110 ${
+                      accentColor === color.hex ? 'text-white ring-2 ring-white/50' : 'text-transparent'
                     }`}
                   >
-                    {accentColor === color.id && <Check className="w-5 h-5" />}
+                    <Check className="w-5 h-5" />
                   </button>
                 ))}
-                <button className="w-12 h-12 rounded-full bg-white/5 border border-white/15 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors">
-                  <Palette className="w-5 h-5" />
-                </button>
+                <label className="relative w-12 h-12 rounded-full bg-white/5 border border-white/15 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors cursor-pointer overflow-hidden">
+                  <input 
+                    type="color" 
+                    value={accentColor} 
+                    onChange={(e) => setAccentColor(e.target.value)}
+                    className="absolute inset-0 w-[200%] h-[200%] -top-1/2 -left-1/2 cursor-pointer opacity-0"
+                  />
+                  <Palette className="w-5 h-5 relative z-10 pointer-events-none" />
+                </label>
               </div>
             </div>
 

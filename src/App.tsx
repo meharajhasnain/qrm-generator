@@ -23,11 +23,13 @@ export default function App() {
   const [accentColor, setAccentColor] = useState('#000000');
   const [embedLogo, setEmbedLogo] = useState(true);
   const [highPrecision, setHighPrecision] = useState(false);
+  const [qrSize, setQrSize] = useState(1024);
 
   const qrRef = useRef<HTMLDivElement>(null);
   const [qrCode] = useState(() => new QRCodeStyling({
-    width: 320,
-    height: 320,
+    width: 1024,
+    height: 1024,
+    margin: 50,
     type: "svg",
     data: "https://qrm.com",
     dotsOptions: {
@@ -72,6 +74,9 @@ export default function App() {
     const b64Logo = `data:image/svg+xml;base64,${btoa(logoSvg)}`;
 
     qrCode.update({
+      width: qrSize,
+      height: qrSize,
+      margin: Math.floor(qrSize * 0.05),
       data: textInput || "https://qrm.com",
       dotsOptions: {
         color: "#000000",
@@ -91,7 +96,7 @@ export default function App() {
       }
     });
 
-  }, [textInput, nodeStyle, accentColor, embedLogo, highPrecision, qrCode]);
+  }, [textInput, nodeStyle, accentColor, embedLogo, highPrecision, qrSize, qrCode]);
 
   const handleDownload = () => {
     qrCode.download({ name: 'qrm-signature', extension: 'png' });
@@ -101,6 +106,12 @@ export default function App() {
     { id: 'square', label: 'Square', icon: LayoutGrid },
     { id: 'rounded', label: 'Rounded', icon: Square },
     { id: 'smooth', label: 'Smooth', icon: CircleDashed },
+  ];
+
+  const sizeOptions = [
+    { label: '512px', value: 512 },
+    { label: '1024px', value: 1024 },
+    { label: '2048px', value: 2048 },
   ];
 
   return (
@@ -223,6 +234,28 @@ export default function App() {
                 onChange={() => setHighPrecision(!highPrecision)}
               />
             </div>
+
+            {/* Export Size */}
+            <div className="space-y-3 mt-2">
+              <label className="text-sm font-semibold tracking-widest text-white/50 uppercase">
+                Export Size
+              </label>
+              <div className="flex gap-3">
+                {sizeOptions.map((size) => (
+                  <button
+                    key={size.value}
+                    onClick={() => setQrSize(size.value)}
+                    className={`px-4 py-2 rounded-xl border transition-colors font-medium text-[13px] ${
+                      qrSize === size.value
+                        ? 'bg-white/20 text-white border-white/30'
+                        : 'border-white/15 text-white/70 hover:bg-white/10'
+                    }`}
+                  >
+                    {size.label}
+                  </button>
+                ))}
+              </div>
+            </div>
           </motion.div>
 
           {/* Preview Panel */}
@@ -236,7 +269,7 @@ export default function App() {
               <div className="w-full h-full bg-white/90 rounded-2xl p-6 relative group overflow-hidden shadow-[0_0_40px_rgba(255,255,255,0.05)] border border-white/20 flex items-center justify-center">
                 
                 {/* Real Functional QR Code rendering */}
-                <div ref={qrRef} className="flex justify-center items-center w-full aspect-square transition-all duration-500 scale-100"></div>
+                <div ref={qrRef} className="flex justify-center items-center w-full aspect-square transition-all duration-500 scale-100 [&>svg]:w-full [&>svg]:h-full"></div>
 
                 {/* Overlay Glass Effect */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent pointer-events-none"></div>

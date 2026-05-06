@@ -7,18 +7,14 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import QRCodeStyling from 'qr-code-styling';
 import {
-  UserCircle2,
   LayoutGrid,
   Square,
   CircleDashed,
-  Check,
   Palette,
   Download,
   Zap,
   LineChart,
-  Shield,
-  Share2,
-  Globe
+  Shield
 } from 'lucide-react';
 
 export default function App() {
@@ -59,6 +55,14 @@ export default function App() {
       switch(nodeStyle) {
         case 'rounded': return 'extra-rounded';
         case 'smooth': return 'dot';
+        default: return 'square';
+      }
+    };
+
+    const getDotsType = () => {
+      switch(nodeStyle) {
+        case 'rounded': return 'rounded';
+        case 'smooth': return 'dots';
         default: return 'square';
       }
     };
